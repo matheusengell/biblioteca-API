@@ -1,5 +1,8 @@
 package com.example.biblioteca.service;
 
+import com.example.biblioteca.dto.livro.LivroRequisicaoDto;
+import com.example.biblioteca.dto.livro.LivroRespostaDto;
+import com.example.biblioteca.mapper.LivroMapper;
 import com.example.biblioteca.model.Livro;
 import com.example.biblioteca.repository.LivroRepository;
 import org.springframework.stereotype.Service;
@@ -10,14 +13,20 @@ import java.util.List;
 @Service
 public class LivroService {
 
+    private final LivroMapper livroMapper;
+
     private LivroRepository livroRepository;
 
-    public LivroService(LivroRepository livroRepository){
+    public LivroService(LivroRepository livroRepository, LivroMapper livroMapper){
         this.livroRepository=livroRepository;
+        this.livroMapper=livroMapper;
     }
 
-    public Livro salvar(Livro livro)throws SQLException{
-        return livroRepository.salvar(livro);
+
+    public LivroRespostaDto salvar(LivroRequisicaoDto livroRequisicaoDto)throws SQLException{
+        Livro livro = livroMapper.paraEntidade(livroRequisicaoDto);
+        livroRepository.salvar(livro);
+        return livroMapper.paraRespostaDto(livro);
     }
 
     public List<Livro> buscarTodos()throws SQLException{
