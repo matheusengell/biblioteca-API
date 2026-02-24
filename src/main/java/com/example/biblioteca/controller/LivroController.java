@@ -31,7 +31,7 @@ public class LivroController {
     }
 
     @GetMapping
-    public List<Livro>listarTodos(
+    public List<LivroRespostaDto>listarTodos(
     ){
         try {
             return livroService.buscarTodos();
@@ -41,7 +41,7 @@ public class LivroController {
     }
 
     @GetMapping("/{id}")
-    public Livro buscarPorId(
+    public LivroRespostaDto buscarPorId(
             @PathVariable long id
     ){
         try {
@@ -52,12 +52,12 @@ public class LivroController {
     }
 
     @PutMapping("/{id}")
-    public Livro atualizar(
+    public LivroRespostaDto atualizar(
             @PathVariable long id,
-            @RequestBody Livro livro
+            @RequestBody LivroRequisicaoDto livroRequisicaoDto
     ){
         try {
-            return livroService.atualizar(livro, id);
+            return livroService.atualizar(livroRequisicaoDto, id);
         }catch (SQLException e){
             throw new RuntimeException(e);
         }

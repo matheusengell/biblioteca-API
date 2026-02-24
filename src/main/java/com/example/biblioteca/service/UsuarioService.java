@@ -1,35 +1,53 @@
 package com.example.biblioteca.service;
 
+import com.example.biblioteca.dto.usuario.UsuarioRequisicaoDto;
+import com.example.biblioteca.dto.usuario.UsuarioRespostaDto;
+import com.example.biblioteca.mapper.UsuarioMapper;
 import com.example.biblioteca.model.Livro;
 import com.example.biblioteca.model.Usuario;
 import com.example.biblioteca.repository.UsuarioRepository;
 import org.springframework.stereotype.Service;
 
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
 public class UsuarioService {
 
+    private UsuarioMapper usuarioMapper;
+
     private UsuarioRepository usuarioRepository;
-    public UsuarioService(UsuarioRepository usuarioRepository)throws SQLException{
+    public UsuarioService(UsuarioRepository usuarioRepository, UsuarioMapper usuarioMapper)throws SQLException{
         this.usuarioRepository=usuarioRepository;
+        this.usuarioMapper=usuarioMapper;
     }
 
-    public Usuario salvar(Usuario usuario)throws SQLException{
-        return usuarioRepository.salvar(usuario);
+    public UsuarioRespostaDto salvar(UsuarioRequisicaoDto usuarioRequisicaoDto)throws SQLException{
+        Usuario usuario = usuarioMapper.paraEntidade(usuarioRequisicaoDto);
+        usuarioRepository.salvar(usuario);
+        return usuarioMapper.paraDto(usuario);
     }
 
-    public List<Usuario> buscarTodos()throws SQLException{
-        return usuarioRepository.buscarTodos();
+    public List<UsuarioRespostaDto> buscarTodos()throws SQLException{
+        List<Usuario> usuarios = usuarioRepository.buscarTodos();
+        List<UsuarioRespostaDto> respostaDtos = new ArrayList<>();
+
+        for(Usuario u : usuarios){
+            respostaDtos.add(usuarioMapper.paraDto(u));
+        }
+        return respostaDtos;
     }
 
-    public Usuario buscarPorId(long id)throws SQLException{
-        return usuarioRepository.buscarPorId(id);
+    public UsuarioRespostaDto buscarPorId(long id)throws SQLException{
+        Usuario usuario = usuarioRepository.buscarPorId(id);
+        return usuarioMapper.paraDto(usuario);
     }
 
-    public Usuario atualizar(Usuario usuario, long id)throws SQLException{
-        return usuarioRepository.atualizar(usuario, id);
+    public UsuarioRespostaDto atualizar(UsuarioRequisicaoDto usuarioRequisicaoDto, long id)throws SQLException{
+        Usuario usuario = usuarioMapper.paraEntidade(usuarioRequisicaoDto);
+        usuarioRepository.atualizar(usuario, id);
+        return usuarioMapper.paraDto(usuario);
     }
 
     public void deletar(long id)throws SQLException{

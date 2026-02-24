@@ -2,7 +2,6 @@ package com.example.biblioteca.model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-import java.sql.Date;
 import java.time.LocalDate;
 
 public class Emprestimo {
@@ -30,7 +29,7 @@ public class Emprestimo {
         this.livro_id = livro_id;
     }
 
-    public Emprestimo(){
+    public Emprestimo(long l, long usuarioId, LocalDate localDate, LocalDate date){
 
     }
 

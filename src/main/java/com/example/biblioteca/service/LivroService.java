@@ -8,6 +8,7 @@ import com.example.biblioteca.repository.LivroRepository;
 import org.springframework.stereotype.Service;
 
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -29,16 +30,25 @@ public class LivroService {
         return livroMapper.paraRespostaDto(livro);
     }
 
-    public List<Livro> buscarTodos()throws SQLException{
-        return livroRepository.buscarTodos();
+    public List<LivroRespostaDto> buscarTodos()throws SQLException{
+        List<Livro> livros = livroRepository.buscarTodos();
+        List<LivroRespostaDto> livroRespostaDtos = new ArrayList<>();
+
+        for(Livro l: livros){
+            livroRespostaDtos.add(livroMapper.paraRespostaDto(l));
+        }
+        return livroRespostaDtos;
     }
 
-    public Livro buscarPorId(long id)throws SQLException{
-        return livroRepository.buscarPorId(id);
+    public LivroRespostaDto buscarPorId(long id)throws SQLException{
+        Livro livro = livroRepository.buscarPorId(id);
+        return livroMapper.paraRespostaDto(livro);
     }
 
-    public Livro atualizar(Livro livro, long id)throws SQLException{
-        return livroRepository.atualizar(livro, id);
+    public LivroRespostaDto atualizar(LivroRequisicaoDto livroRequisicaoDto, long id)throws SQLException{
+        Livro livro = livroMapper.paraEntidade(livroRequisicaoDto);
+        livroRepository.atualizar(livro,id);
+        return livroMapper.paraRespostaDto(livro);
     }
 
     public void deletar(long id)throws SQLException{

@@ -1,4 +1,12 @@
 package com.example.biblioteca.dto.emprestimo;
 
-public record EmprestimoRespostaDto() {
+import java.time.LocalDate;
+
+public record EmprestimoRespostaDto(
+        long id,
+        long livro_id,
+        long usuario_id,
+        LocalDate dataEmprestimo,
+        LocalDate dataDevolucao
+) {
 }
