@@ -4,6 +4,9 @@ import com.example.biblioteca.dto.usuario.UsuarioRequisicaoDto;
 import com.example.biblioteca.dto.usuario.UsuarioRespostaDto;
 import com.example.biblioteca.model.Usuario;
 import com.example.biblioteca.service.UsuarioService;
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.Positive;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.sql.SQLException;
@@ -11,6 +14,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/bibliotecaUser")
+@Validated
 public class UsuarioController {
 
     private UsuarioService usuarioService;
@@ -20,7 +24,7 @@ public class UsuarioController {
 
     @PostMapping
     public UsuarioRespostaDto cadastrarUsuario(
-            @RequestBody UsuarioRequisicaoDto usuarioRequisicaoDto
+           @Valid @RequestBody UsuarioRequisicaoDto usuarioRequisicaoDto
             ){
         try {
             return usuarioService.salvar(usuarioRequisicaoDto);
@@ -40,7 +44,7 @@ public class UsuarioController {
 
     @GetMapping ("/{id}")
     public UsuarioRespostaDto buscarPorId(
-            @PathVariable long id
+            @PathVariable @Positive(message = "O id deve ser positivo") long id
     ){
         try {
             return usuarioService.buscarPorId(id);
@@ -51,8 +55,8 @@ public class UsuarioController {
 
     @PutMapping ("/{id}")
     public UsuarioRespostaDto atualizar(
-            @RequestBody UsuarioRequisicaoDto usuarioRequisicaoDto,
-            @PathVariable long id
+            @Valid  @RequestBody UsuarioRequisicaoDto usuarioRequisicaoDto,
+            @PathVariable @Positive(message = "O id deve ser positivo") long id
     ){
         try {
             return usuarioService.atualizar(usuarioRequisicaoDto, id);
@@ -63,7 +67,7 @@ public class UsuarioController {
 
     @DeleteMapping("/{id}")
     public void remover(
-            @PathVariable long id
+            @PathVariable @Positive(message = "O id deve ser positivo") long id
     ){
         try {
              usuarioService.deletar(id);

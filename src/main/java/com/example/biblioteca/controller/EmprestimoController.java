@@ -57,7 +57,7 @@ public class EmprestimoController {
             @PathVariable long id
     ){
         try {
-            return emprestimoService.atualizar(emprestimoRequisicaoDto, id);
+            return emprestimoService.atualizar(emprestimoRequisicaoDto  , id);
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
