@@ -5,6 +5,9 @@ import com.example.biblioteca.dto.livro.LivroRequisicaoDto;
 import com.example.biblioteca.dto.livro.LivroRespostaDto;
 import com.example.biblioteca.model.Livro;
 import com.example.biblioteca.service.LivroService;
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.Positive;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.sql.SQLException;
@@ -12,6 +15,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/biblioteca")
+@Validated
 public class LivroController {
 
 
@@ -22,7 +26,7 @@ public class LivroController {
 
     @PostMapping
     public LivroRespostaDto cadastrarLivro(
-            @RequestBody LivroRequisicaoDto livroRequisicaoDto) {
+            @RequestBody @Valid LivroRequisicaoDto livroRequisicaoDto) {
         try {
             return livroService.salvar(livroRequisicaoDto);
         } catch (SQLException e) {
@@ -42,7 +46,7 @@ public class LivroController {
 
     @GetMapping("/{id}")
     public LivroRespostaDto buscarPorId(
-            @PathVariable long id
+            @PathVariable @Positive(message = "O id deve ser positivo") long id
     ){
         try {
             return livroService.buscarPorId(id);
@@ -53,8 +57,8 @@ public class LivroController {
 
     @PutMapping("/{id}")
     public LivroRespostaDto atualizar(
-            @PathVariable long id,
-            @RequestBody LivroRequisicaoDto livroRequisicaoDto
+            @PathVariable @Positive(message = "O id deve ser positivo") long id,
+            @RequestBody @Valid LivroRequisicaoDto livroRequisicaoDto
     ){
         try {
             return livroService.atualizar(livroRequisicaoDto, id);
@@ -65,7 +69,7 @@ public class LivroController {
 
     @DeleteMapping("/{id}")
     public void remover(
-            @PathVariable long id
+            @PathVariable @Positive(message = "O id deve ser positivo") long id
     ){
         try {
              livroService.deletar(id);
