@@ -4,6 +4,9 @@ import com.example.biblioteca.dto.emprestimo.EmprestimoRequisicaoDto;
 import com.example.biblioteca.dto.emprestimo.EmprestimoRespostaDto;
 import com.example.biblioteca.model.Emprestimo;
 import com.example.biblioteca.service.EmprestimoService;
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.Positive;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.sql.SQLException;
@@ -12,6 +15,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping ("/bibliotecaEmprestimo")
+@Validated
 public class EmprestimoController {
 
     private EmprestimoService emprestimoService;
@@ -22,7 +26,7 @@ public class EmprestimoController {
 
     @PostMapping
     public EmprestimoRespostaDto cadastrarEmprestimo(
-            @RequestBody EmprestimoRequisicaoDto emprestimoRequisicaoDto
+            @RequestBody @Valid EmprestimoRequisicaoDto emprestimoRequisicaoDto
     ){
         try {
             return emprestimoService.salvar(emprestimoRequisicaoDto);
@@ -42,7 +46,7 @@ public class EmprestimoController {
 
     @GetMapping ("/{id}")
     public EmprestimoRespostaDto listarPorId(
-            @PathVariable long id
+            @PathVariable @Positive(message = "O id deve ser positivo") long id
     ){
         try {
             return emprestimoService.buscarPorId(id);
@@ -53,8 +57,8 @@ public class EmprestimoController {
 
     @PutMapping("/{id}")
     public EmprestimoRespostaDto atualizar(
-            @RequestBody EmprestimoRequisicaoDto emprestimoRequisicaoDto,
-            @PathVariable long id
+            @RequestBody @Valid EmprestimoRequisicaoDto emprestimoRequisicaoDto,
+            @PathVariable  @Positive(message = "O id deve ser positivo") long id
     ){
         try {
             return emprestimoService.atualizar(emprestimoRequisicaoDto  , id);
@@ -65,7 +69,7 @@ public class EmprestimoController {
 
     @DeleteMapping ("/{id}")
     public void remover(
-            @PathVariable long id
+            @PathVariable @Positive(message = "O id deve ser positivo") long id
     ){
         try {
             emprestimoService.deletar(id);
@@ -76,7 +80,7 @@ public class EmprestimoController {
 
     @PutMapping("/{id}/devolucao")
     public void registrarDevolucao(
-            @PathVariable long id
+            @PathVariable  @Positive(message = "O id deve ser positivo") long id
     ){
         try {
             emprestimoService.registrarDevolucao(id);
